@@ -1,3 +1,17 @@
+<script>
+  import { onMount } from 'svelte'
+
+  const BASE_URL = 'https://api.exchangeratesapi.io/latest'
+
+  let from = 'EUR'
+
+  onMount(async () => {
+    const res = await fetch(`${BASE_URL}?base=${from}`)
+    const data = await res.json()
+    console.log(data)
+  })
+</script>
+
 <main class="flex items-center justify-center">
   <div
     class="flex flex-col w-full rounded-lg shadow bg-white sm:w-1/2 lg:max-w-xl"
