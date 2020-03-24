@@ -8,6 +8,18 @@
   let from = 'EUR'
   let to = 'USD'
 
+  function handleFocus() {
+    this.select()
+  }
+
+  function handleInput(e) {
+    if (e.target.name === 'fromCurrency') {
+      from = e.target.value.toUpperCase()
+    } else {
+      to = e.target.value.toUpperCase()
+    }
+  }
+
   onMount(async () => {
     const res = await fetch(`${BASE_URL}?base=${from}`)
     const data = await res.json()
@@ -46,6 +58,8 @@
           name="fromCurrency"
           maxlength="3"
           list="fromCurrencyList"
+          on:input={handleInput}
+          on:focus={handleFocus}
         />
         <datalist id="fromCurrencyList">
           {#each currencies as option}
@@ -82,6 +96,8 @@
           name="toCurrency"
           class="currency-input"
           maxlength="3"
+          on:input={handleInput}
+          on:focus={handleFocus}
           list="toCurrencyList"
         />
         <datalist id="toCurrencyList">
