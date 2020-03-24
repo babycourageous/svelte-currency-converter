@@ -7,6 +7,8 @@
   let amount = 1
   let from = 'EUR'
   let to = 'USD'
+  let exchangeRates = {}
+  let currentRate = 0
 
   function handleFocus() {
     this.select()
@@ -25,6 +27,8 @@
     const data = await res.json()
 
     currencies = [from, ...Object.keys(data.rates)].sort()
+    exchangeRates = { ...data.rates, [from]: 1 }
+    currentRate = exchangeRates[to]
   })
 </script>
 
