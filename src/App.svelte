@@ -23,6 +23,38 @@
     currentRate = 1 / currentRate
   }
 
+  async function fetchRates(base, current) {
+    isFlipped = false
+    const res = await fetch(`${BASE_URL}?base=${base}`)
+    const data = await res.json()
+
+    exchangeRates = data.rates
+    if (base === 'EUR') {
+      exchangeRates['EUR'] = 1
+    }
+    currentRate = data.rates[current]
+  }
+
+  function handleFromCurrencyChange(e) {
+    if (isFlipped) {
+      // pull from existing list
+      currentRate = exchangeRates[from]
+    } else {
+      // fetch new list
+      fetchRates(from, to)
+    }
+  }
+
+  function handleToCurrencyChange(e) {
+    if (isFlipped) {
+      // fetch new list
+      fetchRates(to, from)
+    } else {
+      // pull from existing list
+      currentRate = exchangeRates[to]
+    }
+  }
+
   function handleFocus() {
     this.select()
   }
@@ -72,11 +104,14 @@
         <label for="fromCurrency">Convert From:</label>
         <input
           id="fromCurrency"
+          class="block w-full py-2 px-3 leading-6 border border-gray-300 rounded"
           name="fromCurrency"
           maxlength="3"
-          list="fromCurrencyList"
+          value={from}
           on:input={handleInput}
           on:focus={handleFocus}
+          on:change={handleFromCurrencyChange}
+          list="fromCurrencyList"
         />
         <datalist id="fromCurrencyList">
           {#each currencies as option}
@@ -97,17 +132,19 @@
             0-33.941l-86.059-86.059c-15.119-15.12-40.971-4.412-40.971 16.97z"
           />
         </svg>
-      </button>
+      </svg>
 
       <div class="flex flex-col items-center w-3/5 px-4 sm:w-full">
         <label for="toCurrency">Convert To:</label>
         <input
           id="toCurrency"
+          class="block w-full py-2 px-3 leading-6 border border-gray-300 rounded"
           name="toCurrency"
-          class="currency-input"
           maxlength="3"
+          value={to}
           on:input={handleInput}
           on:focus={handleFocus}
+          on:change={handleToCurrencyChange}
           list="toCurrencyList"
         />
         <datalist id="toCurrencyList">
