@@ -9,8 +9,19 @@
   let to = 'USD'
   let exchangeRates = {}
   let currentRate = 0
+  let isFlipped = false
 
   $: convertedAmount = (amount * currentRate).toFixed(3)
+
+  function switchCurrency() {
+    isFlipped = !isFlipped
+    ;[from, to] = [to, from]
+
+    Object.keys(exchangeRates).map(function(key) {
+      exchangeRates[key] = 1 / exchangeRates[key]
+    })
+    currentRate = 1 / currentRate
+  }
 
   function handleFocus() {
     this.select()
@@ -75,15 +86,8 @@
 
       </div>
 
-      <button
-        class="flex items-center justify-center m-0 bg-transparent border-2
-        border-transparent pointer focus:border-gray-300"
-      >
-        <svg
-          class="w-6 h-6"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 512 512"
-        >
+      <svg class="svg-control" on:click={switchCurrency}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path
             d="M377.941
             169.941V216H134.059v-46.059c0-21.382-25.851-32.09-40.971-16.971L7.029
