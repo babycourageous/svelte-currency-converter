@@ -10,6 +10,8 @@
   let exchangeRates = {}
   let currentRate = 0
 
+  $: convertedAmount = (amount * currentRate).toFixed(3)
+
   function handleFocus() {
     this.select()
   }
@@ -113,7 +115,11 @@
     </div>
 
     <div class="flex flex-wrap justify-center w-full pb-2">
-      <p>Conversion Result Goes Here.</p>
+      {#if amount === undefined || from === undefined || to === undefined}
+        <p>Please enter a valid amount.</p>
+      {:else}
+        <p>{amount} {from} = {convertedAmount} {to}</p>
+      {/if}
     </div>
 
   </div>
