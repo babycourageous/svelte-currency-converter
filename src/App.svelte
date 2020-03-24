@@ -4,11 +4,13 @@
   const BASE_URL = 'https://api.exchangeratesapi.io/latest'
 
   let from = 'EUR'
+  let currencies = []
 
   onMount(async () => {
     const res = await fetch(`${BASE_URL}?base=${from}`)
     const data = await res.json()
-    console.log(data)
+
+    currencies = [from, ...Object.keys(data.rates)].sort()
   })
 </script>
 
@@ -38,16 +40,16 @@
         <label for="fromCurrency">Convert From:</label>
         <input
           id="fromCurrency"
-          class="block w-full py-2 px-3 leading-6 border border-gray-300 rounded"
           name="fromCurrency"
           maxlength="3"
           list="fromCurrencyList"
         />
         <datalist id="fromCurrencyList">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
+          {#each currencies as option}
+            <option>{option}</option>
+          {/each}
         </datalist>
+
       </div>
 
       <button
@@ -74,15 +76,15 @@
         <label for="toCurrency">Convert To:</label>
         <input
           id="toCurrency"
-          class="block w-full py-2 px-3 leading-6 border border-gray-300 rounded"
           name="toCurrency"
+          class="currency-input"
           maxlength="3"
           list="toCurrencyList"
         />
         <datalist id="toCurrencyList">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
+          {#each currencies as option}
+            <option>{option}</option>
+          {/each}
         </datalist>
       </div>
     </div>
