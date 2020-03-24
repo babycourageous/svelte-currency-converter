@@ -3,8 +3,10 @@
 
   const BASE_URL = 'https://api.exchangeratesapi.io/latest'
 
-  let from = 'EUR'
   let currencies = []
+  let amount = 1
+  let from = 'EUR'
+  let to = 'USD'
 
   onMount(async () => {
     const res = await fetch(`${BASE_URL}?base=${from}`)
@@ -32,6 +34,7 @@
         type="number"
         min="0"
         placeholder="Amount"
+        bind:value={amount}
       />
     </div>
 
