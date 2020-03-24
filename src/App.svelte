@@ -77,7 +77,7 @@
   })
 </script>
 
-<main class="flex items-center justify-center">
+<main class="flex items-center justify-center mt-6">
   <div
     class="flex flex-col w-full rounded-lg shadow bg-white sm:w-1/2 lg:max-w-xl"
   >
