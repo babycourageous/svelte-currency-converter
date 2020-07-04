@@ -23,7 +23,7 @@ export default {
       preprocess: autoPreprocess({ postcss: true }),
       // we'll extract any component CSS out into
       // a separate file — better for performance
-      css: css => {
+      css: (css) => {
         css.write('public/build/bundle.css')
       },
     }),
@@ -36,7 +36,7 @@ export default {
     // https://github.com/rollup/rollup-plugin-commonjs
     resolve({
       browser: true,
-      dedupe: importee =>
+      dedupe: (importee) =>
         importee === 'svelte' || importee.startsWith('svelte/'),
     }),
     commonjs(),
