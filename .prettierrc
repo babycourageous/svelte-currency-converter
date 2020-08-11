@@ -2,7 +2,7 @@
   "singleQuote": true,
   "semi": false,
   "trailingComma": "es5",
-  "plugins": ["svelte"],
+  "plugins": ["prettier-plugin-svelte"],
   "svelteSortOrder" : "scripts-markup-styles",
   "svelteBracketNewLine": true
 }
