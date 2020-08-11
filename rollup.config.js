@@ -1,6 +1,7 @@
 import svelte from 'rollup-plugin-svelte'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
+import typescript from '@rollup/plugin-typescript'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
 import postcss from 'rollup-plugin-postcss'
@@ -9,7 +10,7 @@ import autoPreprocess from 'svelte-preprocess'
 const production = !process.env.ROLLUP_WATCH
 
 export default {
-  input: 'src/main.js',
+  input: 'src/main.ts',
   output: {
     sourcemap: true,
     format: 'iife',
@@ -27,6 +28,7 @@ export default {
         css.write('public/build/bundle.css')
       },
     }),
+    typescript({ sourceMap: !production }),
     postcss({ extract: 'tailwind.css' }),
 
     // If you have external dependencies installed from
