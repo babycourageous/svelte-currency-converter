@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte'
 
   const BASE_URL = 'https://api.exchangeratesapi.io/latest'
@@ -11,19 +11,20 @@
   let currentRate = 0
   let isFlipped = false
 
+  let convertedAmount: string
   $: convertedAmount = (amount * currentRate).toFixed(3)
 
   function switchCurrency() {
     isFlipped = !isFlipped
     ;[from, to] = [to, from]
 
-    Object.keys(exchangeRates).map(function(key) {
+    Object.keys(exchangeRates).map(function (key) {
       exchangeRates[key] = 1 / exchangeRates[key]
     })
     currentRate = 1 / currentRate
   }
 
-  async function fetchRates(base, current) {
+  async function fetchRates(base: string, current: string) {
     isFlipped = false
     const res = await fetch(`${BASE_URL}?base=${base}`)
     const data = await res.json()
@@ -35,7 +36,7 @@
     currentRate = data.rates[current]
   }
 
-  function handleFromCurrencyChange(e) {
+  function handleFromCurrencyChange() {
     if (isFlipped) {
       // pull from existing list
       currentRate = exchangeRates[from]
@@ -45,7 +46,7 @@
     }
   }
 
-  function handleToCurrencyChange(e) {
+  function handleToCurrencyChange() {
     if (isFlipped) {
       // fetch new list
       fetchRates(to, from)
@@ -59,11 +60,11 @@
     this.select()
   }
 
-  function handleInput(e) {
-    if (e.target.name === 'fromCurrency') {
-      from = e.target.value.toUpperCase()
+  function handleInput(e: Event) {
+    if ((e.target as HTMLInputElement).name === 'fromCurrency') {
+      from = (e.target as HTMLInputElement).value.toUpperCase()
     } else {
-      to = e.target.value.toUpperCase()
+      to = (e.target as HTMLInputElement).value.toUpperCase()
     }
   }
 
